@@ -14,13 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package nl.mpi.tla.util;
+package nl.mpi.tla.util.saxon;
 
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.SourceLocator;
 import javax.xml.transform.TransformerException;
 import net.sf.saxon.s9api.MessageListener;
 import net.sf.saxon.s9api.XdmNode;
+import nl.mpi.tla.util.Saxon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -29,7 +30,7 @@ import org.slf4j.MDC;
  *
  * @author menzowi
  */
-public class SaxonListener implements MessageListener, ErrorListener {
+public class Listener implements MessageListener, ErrorListener {
     
     private static final Logger logger = LoggerFactory.getLogger(Saxon.class.getName());
     
@@ -37,22 +38,22 @@ public class SaxonListener implements MessageListener, ErrorListener {
     protected String mdc  = "sip";
     protected String id   = null;
 
-    public SaxonListener() {
+    public Listener() {
         this(null,null);
     }
 
-    public SaxonListener(String type) {
+    public Listener(String type) {
         this(type,null);
     }
 
-    public SaxonListener(String type,String id) {
+    public Listener(String type,String id) {
         if (type != null)
             this.type = type;
         if (id != null)
             this.id = id;
     }
     
-    public SaxonListener(String type,String mdc,String id) {
+    public Listener(String type,String mdc,String id) {
         if (type != null)
             this.type = type;
         if (mdc != null)

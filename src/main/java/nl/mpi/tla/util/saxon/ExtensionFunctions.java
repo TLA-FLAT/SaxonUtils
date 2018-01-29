@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package nl.mpi.tla.util;
+package nl.mpi.tla.util.saxon;
 
 import com.twmacinta.util.MD5;
 import java.io.File;
@@ -50,12 +50,13 @@ import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.tree.NamespaceNode;
 import net.sf.saxon.tree.iter.AxisIterator;
 import net.sf.saxon.value.EmptySequence;
+import nl.mpi.tla.util.Saxon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class SaxonExtensionFunctions {
+public final class ExtensionFunctions {
     
-    private static final Logger logger = LoggerFactory.getLogger(SaxonExtensionFunctions.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(ExtensionFunctions.class.getName());
 
     /**
      * Registers with Saxon 9.2+ all the extension functions 

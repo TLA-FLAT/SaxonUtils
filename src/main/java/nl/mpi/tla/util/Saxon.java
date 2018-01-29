@@ -46,6 +46,7 @@ import net.sf.saxon.s9api.XsltCompiler;
 import net.sf.saxon.s9api.XsltExecutable;
 import net.sf.saxon.s9api.XsltTransformer;
 import net.sf.saxon.tree.wrapper.VirtualNode;
+import nl.mpi.tla.util.saxon.ExtensionFunctions;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.slf4j.Logger;
@@ -92,7 +93,7 @@ public class Saxon extends Transform {
         if (sxProcessor == null) {
             sxProcessor = new Processor(false);
             try {
-                SaxonExtensionFunctions.registerAll(sxProcessor.getUnderlyingConfiguration());
+                ExtensionFunctions.registerAll(sxProcessor.getUnderlyingConfiguration());
             } catch (Exception e) {
                 logger.error("Couldn't register the Saxon extension functions!",e);
             }
@@ -409,7 +410,7 @@ public class Saxon extends Transform {
     
     // Extension of default Saxon CLI with our extension functions   
     protected void initializeConfiguration(Configuration config) {
-        SaxonExtensionFunctions.registerAll(config);
+        ExtensionFunctions.registerAll(config);
     }
    
     public static void main(String args[]) {        
