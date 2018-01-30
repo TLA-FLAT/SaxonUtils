@@ -21,7 +21,7 @@ import javax.xml.transform.SourceLocator;
 import javax.xml.transform.TransformerException;
 import net.sf.saxon.s9api.MessageListener;
 import net.sf.saxon.s9api.XdmNode;
-import nl.mpi.tla.util.Saxon;
+import nl.mpi.tla.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -32,7 +32,7 @@ import org.slf4j.MDC;
  */
 public class Listener implements MessageListener, ErrorListener {
     
-    private static final Logger logger = LoggerFactory.getLogger(Saxon.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(Listener.class.getName());
     
     protected String type = "Saxon";
     protected String mdc  = "sip";

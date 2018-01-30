@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Source;
 import net.sf.saxon.Configuration;
 import net.sf.saxon.Transform;
@@ -355,7 +354,7 @@ public class Saxon extends Transform {
             } else {
                 try {
                     res += Saxon.xpath2string(ctxt,grp.substring(1,grp.length()-1),vars,nss);
-                } catch(SaxonApiException e) {
+                } catch(Exception e) {
                     logger.error("avt["+avt+"] failed: "+e);
                     throw e;
                 }
