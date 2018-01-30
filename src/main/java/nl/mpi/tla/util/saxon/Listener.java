@@ -32,28 +32,43 @@ import org.slf4j.MDC;
  */
 public class Listener implements MessageListener, ErrorListener {
     
-    private static final Logger logger = LoggerFactory.getLogger(Listener.class.getName());
+    protected Logger logger = LoggerFactory.getLogger(nl.mpi.tla.util.Saxon.class.getName());
     
     protected String type = "Saxon";
     protected String mdc  = "sip";
     protected String id   = null;
 
     public Listener() {
-        this(null,null);
+        this(null,null,null,null);
+    }
+    
+    public Listener(Logger logger) {
+        this(logger,null,null,null);
+    }
+
+    public Listener(Logger logger,String type) {
+        this(logger,type,null,null);
     }
 
     public Listener(String type) {
-        this(type,null);
+        this(null,type,null,null);
     }
 
+    public Listener(Logger logger,String type,String id) {
+        this(logger,type,null,id);
+    }
+    
     public Listener(String type,String id) {
-        if (type != null)
-            this.type = type;
-        if (id != null)
-            this.id = id;
+        this(null,type,null,id);
     }
     
     public Listener(String type,String mdc,String id) {
+        this(null,type,mdc,id);
+    }
+
+    public Listener(Logger logger,String type,String mdc,String id) {
+        if (logger != null)
+            this.logger = logger;
         if (type != null)
             this.type = type;
         if (mdc != null)
