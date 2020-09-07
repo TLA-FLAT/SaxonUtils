@@ -14,14 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package nl.mpi.tla.util.saxon;
+package nl.mpi.tla.util;
 
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.SourceLocator;
 import javax.xml.transform.TransformerException;
 import net.sf.saxon.s9api.MessageListener;
 import net.sf.saxon.s9api.XdmNode;
-import nl.mpi.tla.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -30,7 +29,7 @@ import org.slf4j.MDC;
  *
  * @author menzowi
  */
-public class Listener implements MessageListener, ErrorListener {
+public class SaxonListener implements MessageListener, ErrorListener {
     
     protected Logger logger = LoggerFactory.getLogger(nl.mpi.tla.util.Saxon.class.getName());
     
@@ -38,35 +37,35 @@ public class Listener implements MessageListener, ErrorListener {
     protected String mdc  = "sip";
     protected String id   = null;
 
-    public Listener() {
+    public SaxonListener() {
         this(null,null,null,null);
     }
     
-    public Listener(Logger logger) {
+    public SaxonListener(Logger logger) {
         this(logger,null,null,null);
     }
 
-    public Listener(Logger logger,String type) {
+    public SaxonListener(Logger logger,String type) {
         this(logger,type,null,null);
     }
 
-    public Listener(String type) {
+    public SaxonListener(String type) {
         this(null,type,null,null);
     }
 
-    public Listener(Logger logger,String type,String id) {
+    public SaxonListener(Logger logger,String type,String id) {
         this(logger,type,null,id);
     }
     
-    public Listener(String type,String id) {
+    public SaxonListener(String type,String id) {
         this(null,type,null,id);
     }
     
-    public Listener(String type,String mdc,String id) {
+    public SaxonListener(String type,String mdc,String id) {
         this(null,type,mdc,id);
     }
 
-    public Listener(Logger logger,String type,String mdc,String id) {
+    public SaxonListener(Logger logger,String type,String mdc,String id) {
         if (logger != null)
             this.logger = logger;
         if (type != null)
