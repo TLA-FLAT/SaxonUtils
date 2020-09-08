@@ -108,6 +108,13 @@ public class Saxon extends Transform {
         return sxXsltCompiler;
     }
 
+    public static synchronized XPathCompiler getXPathCompiler() {
+        if (sxXPathCompiler == null) {
+            sxXPathCompiler = getProcessor().newXPathCompiler();
+        }
+        return sxXPathCompiler;
+    }
+
     public static synchronized XQueryCompiler getXQueryCompiler() {
         if (sxXQueryCompiler == null) {
             sxXQueryCompiler = getProcessor().newXQueryCompiler();
@@ -209,24 +216,20 @@ public class Saxon extends Transform {
     static public XPathSelector xpathCompile(final XdmItem ctxt, final String xp, final Map<String, XdmValue> vars,
             final Map<String, String> nss) throws SaxonApiException {
         try {
-            final XPathCompiler xpc = getProcessor().newXPathCompiler();
             if (vars != null) {
-                for (final Iterator iter = vars.keySet().iterator(); iter.hasNext();) {
-                    final String name = (String) iter.next();
-                    xpc.declareVariable(new QName(name));
+                for (final String name : vars.keySet()) {
+                    getXPathCompiler().declareVariable(new QName(name));
                 }
             }
             if (nss != null) {
-                for (final Iterator iter = nss.keySet().iterator(); iter.hasNext();) {
-                    final String prefix = (String) iter.next();
-                    xpc.declareNamespace(prefix, nss.get(prefix));
+                for (final String prefix : nss.keySet()) {
+                    getXPathCompiler().declareNamespace(prefix, nss.get(prefix));
                 }
             }
-            final XPathSelector xps = xpc.compile(xp).load();
+            final XPathSelector xps = getXPathCompiler().compile(xp).load();
             xps.setContextItem(ctxt);
             if (vars != null) {
-                for (final Iterator<String> iter = vars.keySet().iterator(); iter.hasNext();) {
-                    final String name = iter.next();
+                for (final String name : vars.keySet()) {
                     xps.setVariable(new QName(name), vars.get(name));
                 }
             }
@@ -337,8 +340,6 @@ public class Saxon extends Transform {
 
     /* Attribute Value Templates */
     static protected Pattern AVTPattern = Pattern.compile("\\{+.*?\\}+");
-
-    private static Iterator<String> iter;
 
     static public String avt(final String avt, final XdmItem ctxt, final Map<String, XdmValue> vars)
             throws SaxonApiException {
