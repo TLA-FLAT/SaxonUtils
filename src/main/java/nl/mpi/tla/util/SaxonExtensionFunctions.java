@@ -38,6 +38,7 @@ import net.sf.saxon.expr.XPathContext;
 import net.sf.saxon.lib.ExtensionFunctionCall;
 import net.sf.saxon.lib.ExtensionFunctionDefinition;
 import net.sf.saxon.Configuration;
+import net.sf.saxon.expr.StaticProperty;
 import net.sf.saxon.om.AxisInfo;
 import net.sf.saxon.om.NodeInfo;
 import net.sf.saxon.s9api.Processor;
@@ -49,6 +50,7 @@ import net.sf.saxon.s9api.XdmAtomicValue;
 import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.tree.NamespaceNode;
 import net.sf.saxon.tree.iter.AxisIterator;
+import net.sf.saxon.type.BuiltInAtomicType;
 import net.sf.saxon.value.EmptySequence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,7 +98,7 @@ public final class SaxonExtensionFunctions {
         }
 
         public SequenceType[] getArgumentTypes() {
-            return new SequenceType[] { SequenceType.SINGLE_ANY_URI };
+            return new SequenceType[] { SequenceType.makeSequenceType(BuiltInAtomicType.ANY_URI, StaticProperty.EXACTLY_ONE) };
         }
 
         public SequenceType getResultType(final SequenceType[] suppliedArgTypes) {
@@ -441,7 +443,7 @@ public final class SaxonExtensionFunctions {
         }
 
         public SequenceType[] getArgumentTypes() {
-            return new SequenceType[] { SequenceType.SINGLE_ANY_URI };
+            return new SequenceType[] { SequenceType.makeSequenceType(BuiltInAtomicType.ANY_URI, StaticProperty.EXACTLY_ONE) };
         }
 
         public SequenceType getResultType(final SequenceType[] suppliedArgTypes) {
@@ -490,7 +492,7 @@ public final class SaxonExtensionFunctions {
         }
 
         public SequenceType[] getArgumentTypes() {
-            return new SequenceType[] { SequenceType.SINGLE_ANY_URI };
+            return new SequenceType[] { SequenceType.makeSequenceType(BuiltInAtomicType.ANY_URI, StaticProperty.EXACTLY_ONE) };
         }
 
         public SequenceType getResultType(final SequenceType[] suppliedArgTypes) {
