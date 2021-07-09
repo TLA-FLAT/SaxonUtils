@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package nl.mpi.tla.util.saxon;
+package nl.mpi.tla.util;
 
 import com.twmacinta.util.MD5;
 import java.io.File;
@@ -50,13 +50,12 @@ import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.tree.NamespaceNode;
 import net.sf.saxon.tree.iter.AxisIterator;
 import net.sf.saxon.value.EmptySequence;
-import nl.mpi.tla.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class ExtensionFunctions {
+public final class SaxonExtensionFunctions {
     
-    private static final Logger logger = LoggerFactory.getLogger(ExtensionFunctions.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(SaxonExtensionFunctions.class.getName());
 
     /**
      * Registers with Saxon 9.2+ all the extension functions 
@@ -68,7 +67,7 @@ public final class ExtensionFunctions {
      * This object must be an instance of 
      * <tt>net.sf.saxon.TransformerFactoryImpl</tt>.
      */
-    public static void registerAll(Configuration config) {
+    public static void registerAll(final Configuration config) {
         config.registerExtensionFunction(new FileExistsDefinition());
         config.registerExtensionFunction(new CheckURLDefinition());
         config.registerExtensionFunction(new UUIDDefinition());
@@ -83,12 +82,9 @@ public final class ExtensionFunctions {
     // sx:fileExists
     // -----------------------------------------------------------------------
 
-    public static final class FileExistsDefinition 
-                        extends ExtensionFunctionDefinition {
+    public static final class FileExistsDefinition extends ExtensionFunctionDefinition {
         public StructuredQName getFunctionQName() {
-            return new StructuredQName("sx", 
-                                       "java:nl.mpi.tla.saxon", 
-                                       "fileExists");
+            return new StructuredQName("sx", "java:nl.mpi.tla.saxon", "fileExists");
         }
 
         public int getMinimumNumberOfArguments() {
@@ -103,25 +99,25 @@ public final class ExtensionFunctions {
             return new SequenceType[] { SequenceType.SINGLE_ANY_URI };
         }
 
-        public SequenceType getResultType(SequenceType[] suppliedArgTypes) {
+        public SequenceType getResultType(final SequenceType[] suppliedArgTypes) {
             return SequenceType.SINGLE_BOOLEAN;
         }
-        
+
         public boolean dependsOnFocus() {
-           return false;
+            return false;
         }
 
         public ExtensionFunctionCall makeCallExpression() {
             return new ExtensionFunctionCall() {
                 @Override
-                public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
+                public Sequence call(final XPathContext context, final Sequence[] arguments) throws XPathException {
                     Sequence seq = null;
                     try {
-                        URI uri = new URI(((StringValue) arguments[0].head()).getStringValue());
-                        boolean exists = (new java.io.File(uri)).exists();
+                        final URI uri = new URI(((StringValue) arguments[0].head()).getStringValue());
+                        final boolean exists = (new java.io.File(uri)).exists();
                         seq = (new XdmAtomicValue(exists)).getUnderlyingValue();
-                    } catch(Exception e) {
-                        logger.error("sx:fileExists failed!",e);
+                    } catch (final Exception e) {
+                        logger.error("sx:fileExists failed!", e);
                     }
                     return seq;
                 }
@@ -133,12 +129,9 @@ public final class ExtensionFunctions {
     // sx:fileExists
     // -----------------------------------------------------------------------
 
-    public static final class UUIDDefinition 
-                        extends ExtensionFunctionDefinition {
+    public static final class UUIDDefinition extends ExtensionFunctionDefinition {
         public StructuredQName getFunctionQName() {
-            return new StructuredQName("sx", 
-                                       "java:nl.mpi.tla.saxon", 
-                                       "uuid");
+            return new StructuredQName("sx", "java:nl.mpi.tla.saxon", "uuid");
         }
 
         public int getMinimumNumberOfArguments() {
@@ -150,26 +143,26 @@ public final class ExtensionFunctions {
         }
 
         public SequenceType[] getArgumentTypes() {
-            return new SequenceType[] { };
+            return new SequenceType[] {};
         }
 
-        public SequenceType getResultType(SequenceType[] suppliedArgTypes) {
+        public SequenceType getResultType(final SequenceType[] suppliedArgTypes) {
             return SequenceType.SINGLE_STRING;
         }
-        
+
         public boolean dependsOnFocus() {
-           return false;
+            return false;
         }
 
         public ExtensionFunctionCall makeCallExpression() {
             return new ExtensionFunctionCall() {
                 @Override
-                public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
+                public Sequence call(final XPathContext context, final Sequence[] arguments) throws XPathException {
                     Sequence seq = null;
                     try {
                         seq = (new XdmAtomicValue(UUID.randomUUID().toString())).getUnderlyingValue();
-                    } catch(Exception e) {
-                        logger.error("sx:uuid failed!",e);
+                    } catch (final Exception e) {
+                        logger.error("sx:uuid failed!", e);
                     }
                     return seq;
                 }
@@ -181,12 +174,9 @@ public final class ExtensionFunctions {
     // sx:checkURL
     // -----------------------------------------------------------------------
 
-    public static final class CheckURLDefinition 
-                        extends ExtensionFunctionDefinition {
+    public static final class CheckURLDefinition extends ExtensionFunctionDefinition {
         public StructuredQName getFunctionQName() {
-            return new StructuredQName("sx", 
-                                       "java:nl.mpi.tla.saxon", 
-                                       "checkURL");
+            return new StructuredQName("sx", "java:nl.mpi.tla.saxon", "checkURL");
         }
 
         public int getMinimumNumberOfArguments() {
@@ -201,47 +191,44 @@ public final class ExtensionFunctions {
             return new SequenceType[] { SequenceType.SINGLE_STRING };
         }
 
-        public SequenceType getResultType(SequenceType[] suppliedArgTypes) {
+        public SequenceType getResultType(final SequenceType[] suppliedArgTypes) {
             return SequenceType.SINGLE_BOOLEAN;
         }
-        
+
         public boolean dependsOnFocus() {
-           return false;
+            return false;
         }
 
         public ExtensionFunctionCall makeCallExpression() {
             return new ExtensionFunctionCall() {
                 @Override
-                public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
+                public Sequence call(final XPathContext context, final Sequence[] arguments) throws XPathException {
                     Sequence seq = null;
                     try {
-                        String url = ((StringValue) arguments[0].head()).getStringValue();
+                        final String url = ((StringValue) arguments[0].head()).getStringValue();
                         boolean valid = true;
                         try {
-                            URL u = new URL(url);
-                        } catch(MalformedURLException e) {
+                            final URL u = new URL(url);
+                        } catch (final MalformedURLException e) {
                             valid = false;
                         }
                         seq = (new XdmAtomicValue(valid)).getUnderlyingValue();
-                    } catch(Exception e) {
-                        logger.error("sx:checkURL failed!",e);
+                    } catch (final Exception e) {
+                        logger.error("sx:checkURL failed!", e);
                     }
                     return seq;
                 }
             };
         }
     }
-    
+
     // -----------------------------------------------------------------------
     // sx:evaluate
     // -----------------------------------------------------------------------
 
-    public static final class EvaluateDefinition
-                        extends ExtensionFunctionDefinition {
+    public static final class EvaluateDefinition extends ExtensionFunctionDefinition {
         public StructuredQName getFunctionQName() {
-            return new StructuredQName("sx",
-                                       "java:nl.mpi.tla.saxon",
-                                       "evaluate");
+            return new StructuredQName("sx", "java:nl.mpi.tla.saxon", "evaluate");
         }
 
         public int getMinimumNumberOfArguments() {
@@ -253,59 +240,57 @@ public final class ExtensionFunctions {
         }
 
         public SequenceType[] getArgumentTypes() {
-            return new SequenceType[] { SequenceType.SINGLE_NODE, SequenceType.SINGLE_STRING, SequenceType.OPTIONAL_NODE };
+            return new SequenceType[] { SequenceType.SINGLE_NODE, SequenceType.SINGLE_STRING,
+                    SequenceType.OPTIONAL_NODE };
         }
 
-        public SequenceType getResultType(SequenceType[] suppliedArgTypes) {
+        public SequenceType getResultType(final SequenceType[] suppliedArgTypes) {
             return SequenceType.ANY_SEQUENCE;
         }
-        
+
         public boolean dependsOnFocus() {
-           return true;
+            return true;
         }
 
         public ExtensionFunctionCall makeCallExpression() {
             return new ExtensionFunctionCall() {
                 @Override
-                public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
+                public Sequence call(final XPathContext context, final Sequence[] arguments) throws XPathException {
                     Sequence seq = null;
-                    try {                
-                        NodeInfo    node = (NodeInfo) arguments[0].head();
-                        StringValue path = (StringValue) arguments[1].head();
-                        NodeInfo    ns   = node;
-                        if (arguments.length==3)
+                    try {
+                        final NodeInfo node = (NodeInfo) arguments[0].head();
+                        final StringValue path = (StringValue) arguments[1].head();
+                        NodeInfo ns = node;
+                        if (arguments.length == 3)
                             ns = (NodeInfo) arguments[2].head();
-                        Processor processor = new Processor(context.getConfiguration());
-                        XPathCompiler xpc   = processor.newXPathCompiler();
-                        AxisIterator iter = ns.iterateAxis(AxisInfo.NAMESPACE);
-                        NamespaceNode n = (NamespaceNode)iter.next();
-                        while (n!=null) {
-                            xpc.declareNamespace(n.getLocalPart(),n.getStringValue());
-                            n = (NamespaceNode)iter.next();
+                        final Processor processor = new Processor(context.getConfiguration());
+                        final XPathCompiler xpc = processor.newXPathCompiler();
+                        final AxisIterator iter = ns.iterateAxis(AxisInfo.NAMESPACE);
+                        NamespaceNode n = (NamespaceNode) iter.next();
+                        while (n != null) {
+                            xpc.declareNamespace(n.getLocalPart(), n.getStringValue());
+                            n = (NamespaceNode) iter.next();
                         }
-                        XPathExecutable xpe = xpc.compile(path.getStringValue());
-                        XPathSelector xps   = xpe.load();
+                        final XPathExecutable xpe = xpc.compile(path.getStringValue());
+                        final XPathSelector xps = xpe.load();
                         xps.setContextItem(new XdmNode(node));
                         seq = xps.evaluate().getUnderlyingValue();
-                    } catch(SaxonApiException e) {
-                        logger.error("sx:evaluate failed!",e);
+                    } catch (final SaxonApiException e) {
+                        logger.error("sx:evaluate failed!", e);
                     }
                     return seq;
                 }
             };
         }
     }
-    
+
     // -----------------------------------------------------------------------
     // flt:findBagBase
     // -----------------------------------------------------------------------
 
-    public static final class FindBagBaseDefinition
-                        extends ExtensionFunctionDefinition {
+    public static final class FindBagBaseDefinition extends ExtensionFunctionDefinition {
         public StructuredQName getFunctionQName() {
-            return new StructuredQName("flat",
-                                       "java:nl.mpi.tla.flat",
-                                       "findBagBase");
+            return new StructuredQName("flat", "java:nl.mpi.tla.flat", "findBagBase");
         }
 
         public int getMinimumNumberOfArguments() {
@@ -320,24 +305,25 @@ public final class ExtensionFunctions {
             return new SequenceType[] { SequenceType.SINGLE_STRING };
         }
 
-        public SequenceType getResultType(SequenceType[] suppliedArgTypes) {
+        public SequenceType getResultType(final SequenceType[] suppliedArgTypes) {
             return SequenceType.OPTIONAL_STRING;
         }
-        
+
         public boolean dependsOnFocus() {
-           return false;
+            return false;
         }
-        
-        protected Optional<Path> findBagBase(Path bag) {
-            try (Stream<Path> stream = Files.find(bag,Integer.MAX_VALUE, new BiPredicate<Path, BasicFileAttributes>() {
+
+        protected Optional<Path> findBagBase(final Path bag) {
+            try (Stream<Path> stream = Files.find(bag, Integer.MAX_VALUE, new BiPredicate<Path, BasicFileAttributes>() {
                 @Override
                 public boolean test(Path path, BasicFileAttributes attr) {
-                    return path.toString().endsWith(System.getProperty("file.separator")+"metadata"+System.getProperty("file.separator")+"record.cmdi");
+                    return path.toString().endsWith(System.getProperty("file.separator") + "metadata"
+                            + System.getProperty("file.separator") + "record.cmdi");
                 }
             })) {
                 return stream.findFirst();
-            } catch (Exception e) {
-                logger.error("flat:findBagBase failed!",e);
+            } catch (final Exception e) {
+                logger.error("flat:findBagBase failed!", e);
             }
             return null;
         }
@@ -345,39 +331,36 @@ public final class ExtensionFunctions {
         public ExtensionFunctionCall makeCallExpression() {
             return new ExtensionFunctionCall() {
                 @Override
-                public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
+                public Sequence call(final XPathContext context, final Sequence[] arguments) throws XPathException {
                     Sequence seq = EmptySequence.getInstance();
                     try {
-                        String dir = arguments[0].head().getStringValue();
+                        final String dir = arguments[0].head().getStringValue();
                         Path p = Paths.get(dir);
                         if (Files.isDirectory(p)) {
                             // look for: bag/???/metadata/record.cmdi
-                            Optional<Path> r = findBagBase(p);
-                            if (r!= null && r.isPresent()) {
+                            final Optional<Path> r = findBagBase(p);
+                            if (r != null && r.isPresent()) {
                                 p = r.get();
                                 p = p.getParent().getParent();
                                 seq = new XdmAtomicValue(p.toString()).getUnderlyingValue();
                             }
                         }
-                    } catch(Exception e) {
-                        logger.error("flat:findBagBase failed!",e);
+                    } catch (final Exception e) {
+                        logger.error("flat:findBagBase failed!", e);
                     }
                     return seq;
                 }
             };
         }
     }
-    
+
     // -----------------------------------------------------------------------
     // sx:findFirstFile
     // -----------------------------------------------------------------------
 
-    public static final class FindFirstFileDefinition
-                        extends ExtensionFunctionDefinition {
+    public static final class FindFirstFileDefinition extends ExtensionFunctionDefinition {
         public StructuredQName getFunctionQName() {
-            return new StructuredQName("sx",
-                                       "java:nl.mpi.tla.saxon",
-                                       "findFirstFile");
+            return new StructuredQName("sx", "java:nl.mpi.tla.saxon", "findFirstFile");
         }
 
         public int getMinimumNumberOfArguments() {
@@ -392,24 +375,24 @@ public final class ExtensionFunctions {
             return new SequenceType[] { SequenceType.SINGLE_STRING, SequenceType.SINGLE_STRING };
         }
 
-        public SequenceType getResultType(SequenceType[] suppliedArgTypes) {
+        public SequenceType getResultType(final SequenceType[] suppliedArgTypes) {
             return SequenceType.OPTIONAL_STRING;
         }
-        
+
         public boolean dependsOnFocus() {
-           return false;
+            return false;
         }
-        
-        protected Optional<Path> findFirstFile(Path dir,String fle) {
-            try (Stream<Path> stream = Files.find(dir,Integer.MAX_VALUE, new BiPredicate<Path, BasicFileAttributes>() {
+
+        protected Optional<Path> findFirstFile(final Path dir, final String fle) {
+            try (Stream<Path> stream = Files.find(dir, Integer.MAX_VALUE, new BiPredicate<Path, BasicFileAttributes>() {
                 @Override
                 public boolean test(Path path, BasicFileAttributes attr) {
                     return path.toString().endsWith(fle);
                 }
             })) {
                 return stream.findFirst();
-            } catch (Exception e) {
-                logger.error("sx:findFirstFile failed!",e);
+            } catch (final Exception e) {
+                logger.error("sx:findFirstFile failed!", e);
             }
             return null;
         }
@@ -417,39 +400,36 @@ public final class ExtensionFunctions {
         public ExtensionFunctionCall makeCallExpression() {
             return new ExtensionFunctionCall() {
                 @Override
-                public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
+                public Sequence call(final XPathContext context, final Sequence[] arguments) throws XPathException {
                     Sequence seq = EmptySequence.getInstance();
                     try {
-                        String dir = arguments[0].head().getStringValue();
+                        final String dir = arguments[0].head().getStringValue();
                         Path p = Paths.get(dir);
                         if (Files.isDirectory(p)) {
-                            String fle = arguments[1].head().getStringValue();
+                            final String fle = arguments[1].head().getStringValue();
                             // look for: bag/???/metadata/record.cmdi
-                            Optional<Path> r = findFirstFile(p,fle);
-                            if (r!= null && r.isPresent()) {
+                            final Optional<Path> r = findFirstFile(p, fle);
+                            if (r != null && r.isPresent()) {
                                 p = r.get();
                                 seq = new XdmAtomicValue(p.toString()).getUnderlyingValue();
                             }
                         }
-                    } catch(Exception e) {
-                        logger.error("sx:findFirstFile failed!",e);
+                    } catch (final Exception e) {
+                        logger.error("sx:findFirstFile failed!", e);
                     }
                     return seq;
                 }
             };
         }
     }
-    
+
     // -----------------------------------------------------------------------
     // sx:md5
     // -----------------------------------------------------------------------
 
-    public static final class MD5Definition 
-                        extends ExtensionFunctionDefinition {
+    public static final class MD5Definition extends ExtensionFunctionDefinition {
         public StructuredQName getFunctionQName() {
-            return new StructuredQName("sx", 
-                                       "java:nl.mpi.tla.saxon", 
-                                       "md5");
+            return new StructuredQName("sx", "java:nl.mpi.tla.saxon", "md5");
         }
 
         public int getMinimumNumberOfArguments() {
@@ -464,25 +444,26 @@ public final class ExtensionFunctions {
             return new SequenceType[] { SequenceType.SINGLE_ANY_URI };
         }
 
-        public SequenceType getResultType(SequenceType[] suppliedArgTypes) {
+        public SequenceType getResultType(final SequenceType[] suppliedArgTypes) {
             return SequenceType.SINGLE_STRING;
         }
-        
+
         public boolean dependsOnFocus() {
-           return false;
+            return false;
         }
 
         public ExtensionFunctionCall makeCallExpression() {
             return new ExtensionFunctionCall() {
                 @Override
-                public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
+                public Sequence call(final XPathContext context, final Sequence[] arguments) throws XPathException {
                     Sequence seq = null;
                     try {
-                        URI uri = new URI(((StringValue) arguments[0].head()).getStringValue());
-                        String hash = MD5.asHex(MD5.getHash(new java.io.File(uri)));
+                        final URI uri = new URI(((StringValue) arguments[0].head()).getStringValue());
+                        final String hash = MD5.asHex(MD5.getHash(new java.io.File(uri)));
                         seq = (new XdmAtomicValue(hash)).getUnderlyingValue();
-                    } catch(Exception e) {
-                        System.err.println("ERR: ["+((StringValue) arguments[0].head()).getStringValue()+"]:"+e.getMessage());
+                    } catch (final Exception e) {
+                        System.err.println("ERR: [" + ((StringValue) arguments[0].head()).getStringValue() + "]:"
+                                + e.getMessage());
                         e.printStackTrace(System.err);
                     }
                     return seq;
@@ -490,17 +471,14 @@ public final class ExtensionFunctions {
             };
         }
     }
-    
+
     // -----------------------------------------------------------------------
     // sx:fileSize
     // -----------------------------------------------------------------------
 
-    public static final class FileSizeDefinition 
-                        extends ExtensionFunctionDefinition {
+    public static final class FileSizeDefinition extends ExtensionFunctionDefinition {
         public StructuredQName getFunctionQName() {
-            return new StructuredQName("sx", 
-                                       "java:nl.mpi.tla.saxon", 
-                                       "fileSize");
+            return new StructuredQName("sx", "java:nl.mpi.tla.saxon", "fileSize");
         }
 
         public int getMinimumNumberOfArguments() {
@@ -515,24 +493,24 @@ public final class ExtensionFunctions {
             return new SequenceType[] { SequenceType.SINGLE_ANY_URI };
         }
 
-        public SequenceType getResultType(SequenceType[] suppliedArgTypes) {
+        public SequenceType getResultType(final SequenceType[] suppliedArgTypes) {
             return SequenceType.SINGLE_INTEGER;
         }
-        
+
         public boolean dependsOnFocus() {
-           return false;
+            return false;
         }
 
         public ExtensionFunctionCall makeCallExpression() {
             return new ExtensionFunctionCall() {
                 @Override
-                public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
+                public Sequence call(final XPathContext context, final Sequence[] arguments) throws XPathException {
                     Sequence seq = null;
                     try {
-                        URI uri = new URI(((StringValue) arguments[0].head()).getStringValue());
-                        File file = new java.io.File(uri);
+                        final URI uri = new URI(((StringValue) arguments[0].head()).getStringValue());
+                        final File file = new java.io.File(uri);
                         seq = (new XdmAtomicValue(file.length())).getUnderlyingValue();
-                    } catch(Exception e) {
+                    } catch (final Exception e) {
                         System.err.println("ERR: ["+((StringValue) arguments[0].head()).getStringValue()+"]:"+e.getMessage());
                         e.printStackTrace(System.err);
                     }
