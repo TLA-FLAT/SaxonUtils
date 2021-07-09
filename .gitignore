@@ -24,3 +24,9 @@ hs_err_pid*
 
 # temp dir
 /tmp/
+
+.settings/
+.project
+.classpath
+
+**/.DS_Store
