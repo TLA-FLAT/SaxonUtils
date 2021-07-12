@@ -27,11 +27,12 @@
             <version>1.2.0</version>
         </dependency>
         <!-- MD5 -->
+        <!-- https://mvnrepository.com/artifact/com.joyent.util/fast-md5 -->
         <dependency>
-            <groupId>com.twmacinta</groupId>
+            <groupId>com.joyent.util</groupId>
             <artifactId>fast-md5</artifactId>
             <version>2.7.1</version>
-        </dependency>
+        </dependency>    
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -77,12 +78,8 @@
     </build>
     <repositories>
         <repository>
-            <id>MPI</id>
-            <url>http://lux15.mpi.nl/nexus/content/groups/public</url>
-        </repository>
-        <repository>
-            <id>CLARIN</id>
-            <url>https://nexus.clarin.eu/content/repositories/Clarin</url>
+                <id>CLARIN</id>
+                <url>https://nexus.clarin.eu/content/repositories/Clarin</url>
         </repository>
         <repository>
             <id>CLARIN-Snapshot</id>
@@ -93,19 +90,19 @@
             </snapshots>
         </repository>                                                     
         <repository>
-            <id>central</id>
-            <name>Central Repository</name>
-            <url>http://repo.maven.apache.org/maven2</url>
-            <layout>default</layout>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
+                <id>central</id>
+                <name>Central Repository</name>
+                <url>https://repo.maven.apache.org/maven2</url>
+                <layout>default</layout>
+                <snapshots>
+                        <enabled>false</enabled>
+                </snapshots>
         </repository>
         <!-- needed for fast-md5 -->
         <repository>
-            <id>Geomajas</id>
-            <name>Geomajas repository</name>
-            <url>http://maven.geomajas.org/</url>
+                <id>Geomajas</id>
+                <name>Geomajas repository</name>
+                <url>http://maven.geomajas.org/</url>
         </repository>
     </repositories>
     <distributionManagement>

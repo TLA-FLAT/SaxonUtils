@@ -37,7 +37,9 @@ import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.XPathCompiler;
 import net.sf.saxon.s9api.XPathSelector;
 import net.sf.saxon.s9api.XQueryCompiler;
+import net.sf.saxon.s9api.XdmAtomicValue;
 import net.sf.saxon.s9api.XdmDestination;
+import net.sf.saxon.s9api.XdmFunctionItem;
 import net.sf.saxon.s9api.XdmItem;
 import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XdmValue;
@@ -151,6 +153,30 @@ public class Saxon extends Transform {
         final Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(src);
         doc.setDocumentURI(src.toURI().toString());
         return doc;
+    }
+
+    /**
+     * Load JSON.
+     *
+     * @param json The JSON
+     * @return A Saxon XDM value
+     * @throws SaxonApiException
+     */
+    static public XdmValue parseJson(final String json) throws SaxonApiException {
+            XdmFunctionItem parseJsonFn = XdmFunctionItem.getSystemFunction(getProcessor(), new QName("http://www.w3.org/2005/xpath-functions","parse-json"), 1);
+            return parseJsonFn.call(getProcessor(), new XdmAtomicValue(json));
+    }
+
+    /**
+     * Load JSON.
+     *
+     * @param json The JSON file
+     * @return A Saxon XDM value
+     * @throws SaxonApiException
+     */
+    static public XdmValue parseJson(final File json) throws SaxonApiException {
+        XdmFunctionItem jsonDocFn = XdmFunctionItem.getSystemFunction(getProcessor(), new QName("http://www.w3.org/2005/xpath-functions", "json-doc"), 1);
+        return jsonDocFn.call(getProcessor(), new XdmAtomicValue(json.getPath()));
     }
 
     /**
