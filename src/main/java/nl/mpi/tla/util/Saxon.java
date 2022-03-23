@@ -159,25 +159,17 @@ public class Saxon extends Transform {
      * Load JSON.
      *
      * @param json The JSON
-     * @return A Saxon XDM value
+     * @return A Saxon XDM node
      * @throws SaxonApiException
      */
-    static public XdmValue parseJson(final String json) throws SaxonApiException {
-            XdmFunctionItem parseJsonFn = XdmFunctionItem.getSystemFunction(getProcessor(), new QName("http://www.w3.org/2005/xpath-functions","parse-json"), 1);
-            return parseJsonFn.call(getProcessor(), new XdmAtomicValue(json));
-    }
-
-    /**
-     * Load JSON.
-     *
-     * @param json The JSON file
-     * @return A Saxon XDM value
-     * @throws SaxonApiException
-     */
-    static public XdmValue parseJson(final File json) throws SaxonApiException {
-        XdmFunctionItem jsonDocFn = XdmFunctionItem.getSystemFunction(getProcessor(), new QName("http://www.w3.org/2005/xpath-functions", "json-doc"), 1);
-        return jsonDocFn.call(getProcessor(), new XdmAtomicValue(json.getPath()));
-    }
+    static public XdmNode parseJson(final String json) throws SaxonApiException {
+        XdmFunctionItem parseJsonFn = XdmFunctionItem.getSystemFunction(Saxon.getProcessor(), new QName("http://www.w3.org/2005/xpath-functions","json-to-xml"), 1);
+        XdmValue val = parseJsonFn.call(Saxon.getProcessor(), new XdmAtomicValue(json));
+        if (!(val instanceof net.sf.saxon.s9api.XdmNode)) {
+          throw new SaxonApiException("Saxon.parseJson() resulted in "+val.getClass().getCanonicalName()+" != net.sf.saxon.s9api.XdmNode!");
+        }
+        return (XdmNode)val;
+        }
 
     /**
      * Compile an XLST document. To use compiled XSLT document use the load() method
