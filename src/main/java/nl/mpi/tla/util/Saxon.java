@@ -72,14 +72,6 @@ public class Saxon extends Transform {
      */
     static private XsltCompiler sxXsltCompiler = null;
     /**
-     * The Saxon XPath compiler.
-     */
-    static private XPathCompiler sxXPathCompiler = null;
-    /**
-     * The Saxon XQuery compiler.
-     */
-    static private XQueryCompiler sxXQueryCompiler = null;
-    /**
      * The Saxon Document Builder
      */
     static private DocumentBuilder sxDocumentBuilder = null;
@@ -111,17 +103,11 @@ public class Saxon extends Transform {
     }
 
     public static synchronized XPathCompiler getXPathCompiler() {
-        if (sxXPathCompiler == null) {
-            sxXPathCompiler = getProcessor().newXPathCompiler();
-        }
-        return sxXPathCompiler;
+        return getProcessor().newXPathCompiler();
     }
 
     public static synchronized XQueryCompiler getXQueryCompiler() {
-        if (sxXQueryCompiler == null) {
-            sxXQueryCompiler = getProcessor().newXQueryCompiler();
-        }
-        return sxXQueryCompiler;
+        return getProcessor().newXQueryCompiler();
     }
 
     public static synchronized DocumentBuilder getDocumentBuilder() {
@@ -234,17 +220,18 @@ public class Saxon extends Transform {
     static public XPathSelector xpathCompile(final XdmItem ctxt, final String xp, final Map<String, XdmValue> vars,
             final Map<String, String> nss) throws SaxonApiException {
         try {
+            XPathCompiler xpc = getXPathCompiler();
             if (vars != null) {
                 for (final String name : vars.keySet()) {
-                    getXPathCompiler().declareVariable(new QName(name));
+                    xpc.declareVariable(new QName(name));
                 }
             }
             if (nss != null) {
                 for (final String prefix : nss.keySet()) {
-                    getXPathCompiler().declareNamespace(prefix, nss.get(prefix));
+                    xpc.declareNamespace(prefix, nss.get(prefix));
                 }
             }
-            final XPathSelector xps = getXPathCompiler().compile(xp).load();
+            final XPathSelector xps = xpc.compile(xp).load();
             xps.setContextItem(ctxt);
             if (vars != null) {
                 for (final String name : vars.keySet()) {
