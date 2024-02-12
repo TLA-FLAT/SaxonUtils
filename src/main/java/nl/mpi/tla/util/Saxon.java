@@ -240,7 +240,7 @@ public class Saxon extends Transform {
             }
             return xps;
         } catch (final SaxonApiException e) {
-            logger.error("xpathCompile: xpath[" + xp + "] failed: " + e);
+            logger.error("xpathCompile: xpath[" + xp + "] failed: " + e, e);
             throw e;
         }
     }
@@ -379,8 +379,7 @@ public class Saxon extends Transform {
                 try {
                     res += Saxon.xpath2string(ctxt, grp.substring(1, grp.length() - 1), vars, nss);
                 } catch (final Exception e) {
-                    logger.error("avt[" + avt + "] failed: " + e);
-                    e.printStackTrace(logger);
+                    logger.error("avt[" + avt + "] failed: " + e, e);
                     throw e;
                 }
             }
