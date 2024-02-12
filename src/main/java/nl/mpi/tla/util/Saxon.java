@@ -380,6 +380,7 @@ public class Saxon extends Transform {
                     res += Saxon.xpath2string(ctxt, grp.substring(1, grp.length() - 1), vars, nss);
                 } catch (final Exception e) {
                     logger.error("avt[" + avt + "] failed: " + e);
+                    e.printStackTrace(logger);
                     throw e;
                 }
             }
