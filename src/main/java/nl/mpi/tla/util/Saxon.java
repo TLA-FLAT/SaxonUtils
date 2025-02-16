@@ -28,6 +28,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Source;
+import javax.xml.transform.TransformerException;
+
 import net.sf.saxon.Configuration;
 import net.sf.saxon.Transform;
 import net.sf.saxon.s9api.DocumentBuilder;
@@ -434,6 +436,12 @@ public class Saxon extends Transform {
     // Extension of default Saxon CLI with our extension functions
     protected void initializeConfiguration(final Configuration config) {
         SaxonExtensionFunctions.registerAll(config);
+        org.nineml.coffeesacks.RegisterCoffeeSacks register = new org.nineml.coffeesacks.RegisterCoffeeSacks();
+        try {
+            register.initialize(config);
+        } catch (TransformerException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     public static void main(final String args[]) {

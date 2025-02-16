@@ -32,15 +32,34 @@
             <groupId>com.joyent.util</groupId>
             <artifactId>fast-md5</artifactId>
             <version>2.7.1</version>
-        </dependency>    
+        </dependency>
+        <!-- iXML -->
+        <!-- https://mvnrepository.com/artifact/org.nineml/coffeepot -->
+        <dependency>
+            <groupId>org.nineml</groupId>
+            <artifactId>coffeepot</artifactId>
+            <version>3.2.7</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.nineml/coffeesacks -->
+        <dependency>
+            <groupId>org.nineml</groupId>
+            <artifactId>coffeesacks</artifactId>
+            <version>3.2.7</version>
+        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.12.1</version>
+                <configuration>
+                    <release>8</release>
+                </configuration>
+            </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
