@@ -141,11 +141,11 @@ public final class SaxonExtensionFunctions {
         }
 
         public int getMaximumNumberOfArguments() {
-            return 0;
+            return 1;
         }
 
         public SequenceType[] getArgumentTypes() {
-            return new SequenceType[] {};
+            return new SequenceType[] { SequenceType.SINGLE_STRING };
         }
 
         public SequenceType getResultType(final SequenceType[] suppliedArgTypes) {
@@ -162,9 +162,15 @@ public final class SaxonExtensionFunctions {
                 public Sequence call(final XPathContext context, final Sequence[] arguments) throws XPathException {
                     Sequence seq = null;
                     try {
+                        if (arguments.length > 0) {
+                            final String uniq = ((StringValue) arguments[0].head()).getStringValue();
+                            //System.err.println("DBG? sx:uuid("+uniq+")");
+                        } else {
+                            //System.err.println("DBG? sx:uuid(NULL)");
+                        }
                         seq = (new XdmAtomicValue(UUID.randomUUID().toString())).getUnderlyingValue();
                     } catch (final Exception e) {
-                        logger.error("sx:uuid failed!", e);
+                        //logger.error("sx:uuid failed!", e);
                     }
                     return seq;
                 }
