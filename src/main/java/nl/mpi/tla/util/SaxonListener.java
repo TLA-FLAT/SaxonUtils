@@ -20,6 +20,8 @@ import javax.xml.transform.ErrorListener;
 import javax.xml.transform.SourceLocator;
 import javax.xml.transform.TransformerException;
 import net.sf.saxon.s9api.MessageListener;
+import net.sf.saxon.s9api.MessageListener2;
+import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.XdmNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +31,7 @@ import org.slf4j.MDC;
  *
  * @author menzowi
  */
-public class SaxonListener implements MessageListener, ErrorListener {
+public class SaxonListener implements MessageListener, MessageListener2, ErrorListener {
     
     protected Logger logger = LoggerFactory.getLogger(nl.mpi.tla.util.Saxon.class.getName());
     
@@ -137,4 +139,16 @@ public class SaxonListener implements MessageListener, ErrorListener {
                 logger.info(type+"["+getLocation(sl)+"]: "+xn.getStringValue());
         }
     }
+    
+    @Override
+    public void message(XdmNode xn, QName errorCode, boolean terminate, SourceLocator sl) {
+        setID();
+        if (!handleMessage(xn.getStringValue(),getLocation(sl),null)) {
+            if (terminate)
+                logger.error(type+"["+getLocation(sl)+"]: "+xn.getStringValue());
+            else
+                logger.info(type+"["+getLocation(sl)+"]: "+xn.getStringValue());
+        }
+    }
+
 }
